@@ -1,0 +1,24 @@
+@media only screen and (max-width: 767px) {
+.content-box{margin:10px !important;}
+.wpform_container{padding:10px !important;}	
+.step1, .step2, .step3{ padding:10px !important; float:left; width:100%;}
+.step2, .step3{margin-top:0 !important;}
+.nxt{float:left; width:100%;}
+.layout3{height:auto !important; width:100% !important;}
+.step3 .innerDiv{float:left;}
+.layout3 .col-sm-9 > span{float:none !important; display:inline;}
+.layout3 .col-sm-9 > #project_info{float:none !important; display:inline;}
+
+.step3 .layout1 input {
+    width: 250px;
+}
+.step2 .innerDiv {
+   padding-left:0px;
+}
+.s1_form > input {
+width: 100%;
+}
+.zipcode {
+width: 100%;
+}
+}

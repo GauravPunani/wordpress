@@ -1,0 +1,695 @@
+*{margin:0;padding:0;box-sizing:border-box;font-family: 'Open Sans', sans-serif;}
+li{list-style:none;}
+a{text-decoration:none;}
+.container{width:1170px;margin:0 auto;}
+.card-detail {
+	border: 1px solid #ccc;
+	text-align: center;
+}
+.card-detail p {
+	font-size: 16px;
+	padding: 5px 0;
+}
+.heading {
+	font-size: 26px;
+	text-transform: capitalize;
+	font-weight: 600;
+}
+.card-txt h4 {
+	font-size: 18px;
+	text-transform: capitalize;
+	padding: 10px 0;
+}
+.card-txt {
+	margin: 10px 0;
+	text-align: left;
+	width: 30%;
+	float: none;
+	margin: 0 auto;
+}
+.card-txt h2 {
+	font-size: 23px;
+	padding: 5px 0;
+	font-weight: 600;
+}
+.card-detail img {
+	height: auto;
+	object-fit: cover;
+	width: 100%;
+}
+.card-txt li i {
+	padding-right: 8px;
+	font-size: 20px;
+	float: left;
+	padding-top: 5px;
+}
+
+/* 03-04-19 */
+.masthead {
+  height: 40vh;
+  background-image: url('https://source.unsplash.com/BtbjCFUvBXs/1920x1080');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.steps_parent h1 {
+    font-size: 30px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+.steps_parent .card.nextstep {
+    border: none;
+    box-shadow: 5px 5px 50px #ddd;
+    border-radius: 20px;
+        width: 100% !important;
+}
+.steps_parent .card-body {
+    padding: 0;
+}
+.steps_parent .card.nextstep {
+    margin: 10px 0;
+}
+.steps_parent .card-body a {
+    font-size: 10px;
+    color:#000;
+}
+.steps_parent .card-footer {
+    text-align: center;
+    background: transparent;
+    border: none;
+}
+.steps_parent .btn.btn-primary {
+    background: #28a745 !important;
+    border: none;
+}
+.view_all_succes {
+    padding: 7px 60px !important;
+}
+.steps_parent img.card-img-top {
+    padding-top: 10px;
+}
+#form_foundation h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+#form_foundation .location_icon {
+    margin: 0 10px;
+}
+#form_foundation .mobile {
+    margin-right: 10px;
+}
+#form_foundation h6 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+#form_foundation p {
+    width: 100%;
+    float: left;
+    font-size:14px;
+}
+#form_foundation p span {
+    width: 100%;
+    float: left;
+}
+div#form_foundation {
+    margin: 50px 0;
+    display: inline-block;
+    width: 100%;
+}
+.circle_words {
+    margin-right: 10px;
+}
+#gift_card .active {
+    border: 1px solid #28a745;
+    background: transparent;
+}
+.active_deactive {
+    padding: 6px 10px;
+    background: transparent;
+    border: 1px solid #000;
+}
+
+
+.qty .count {
+    color: #000;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 30px;
+    padding: 0 2px
+    ;min-width: 35px;
+    text-align: center;
+}
+.qty .plus {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    width: 30px;
+    height: 30px;
+    font: 30px/1 Arial,sans-serif;
+    text-align: center;
+    border-radius: 50%;
+    }
+.qty .minus {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    width: 30px;
+    height: 30px;
+    font: 30px/1 Arial,sans-serif;
+    text-align: center;
+    border-radius: 50%;
+    background-clip: padding-box;
+}
+
+.minus:hover{
+    background-color: #717fe0 !important;
+}
+.plus:hover{
+    background-color: #717fe0 !important;
+}
+/*Prevent text selection*/
+span{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+input{  
+    border: 0;
+    width: 2%;
+}
+nput::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input:disabled{
+    background-color:white;
+}
+
+.spinner-border {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}  
+ .card {
+    CURSOR: POINTER;
+} 
+div#loader_header {
+    display: none;
+}
+.loader_form {
+    filter: blur(3px) !important;
+}         
+
+/* complete order css */
+.debenhans_bit ul { padding-left: 0px;}
+.debenhans_bit ul li {list-style: none;}
+.debenhans_bit span {width: 100%;float: left;}
+
+#accordion [data-toggle="collapse"]:after {
+display: inline-block;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  content: "\f054";
+  transform: rotate(360deg) ;
+  transition: all linear 0.25s;
+  float: right;
+  }   
+[data-toggle="collapse"].collapsed:after {
+  transform: rotate(0deg) ;
+}
+
+#accordion h5 {font-size: 14px;}
+#accordion .card-header {background: transparent;   }
+
+.word_range .collapse {
+    border-top: 1px solid #afafaf;
+    padding-bottom: 20px;
+	margin:20px 0;
+}
+.word_range .collapse p {
+    padding: 10px 0;
+}
+#accordion i {
+    margin-right: 10px;
+}
+#accordion .card {border: none;}
+#accordion {margin: 20px 0;}
+#accordion a {color: #383838;}
+#accordion .card-body {padding: 10px;}
+.debenhans_bit i {
+    color: #d4d4d4;
+}
+#form_me .active_disactive {
+    padding: 5px 30px;
+	 border: 2px solid #949494;
+	 border-radius: 5px;
+}
+#form_me .active {
+    border: 2px solid #051F67;color:#051F67;      font-weight: bold;
+}
+#form_me i {
+    color: #051F67;
+    font-size: 13px;
+    top: -1px;
+    position: relative;
+}
+#form_me h6 {
+    color: #9B9B9B;
+    margin-bottom: 20px;
+}
+#form_me span {
+    margin: 0 5px;
+}
+#form_me a{color:#949494;}
+#gift_card h6 {
+    color: #9B9B9B;
+    margin: 20px 0;
+}
+.debenhans_bit h3 {
+    font-size: 18px;
+    margin: 15px 0;
+	    color: #424242;
+}
+/*#curry_card ul {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}*/
+#checkout {margin: 30px 0;}
+.total {
+    display: inline-block;
+    width: 100%;
+    margin: 7px 0;
+}
+
+.swap_card {
+    background: #051F67 !Important;
+    width: 100%;
+    color: #fff !Important;
+    text-decoration: none !Important;
+    margin: 20px 0 !Important;
+	    cursor: pointer !Important;
+}
+.swap_card:hover {
+    background: #28a745 !Important;
+}
+.swap_card {
+    width: 30%;
+}
+#checkout h3 {
+    color: #000;
+    font-weight: bold;
+}
+#Transaction .debenhans_bit {
+    border: 1px solid #ddd;
+    padding: 10px;
+    padding-left: 23%;
+    padding-right: 23%;
+	    border-radius: 5px;
+}
+#Transaction {margin: 30px 0;}
+#quantity_add span {
+    width: 100%;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    color: #cacaca;
+}
+.quantity_add {
+    width: 100%;
+    display: inline-block;
+    margin: 15px 0;
+}
+.quantity_add h6 {
+    margin: 0px !important;
+    color: #302e2e !important;
+    font-weight: bold;
+}
+.sub_text button {
+    background: transparent;
+    border: none;
+}
+
+.sub_text input {
+    text-align: center;
+    border: none;
+    border-left: 1px solid  #a9a9a9;
+    border-right: 1px solid  #a9a9a9;
+}
+.sub_text button:focus {
+    outline: none;
+}
+#curry_world{
+    margin: 20px 0;
+}
+#accordion a {
+    color: #383838;
+    width: 100%;
+    display: block;
+    
+    padding: 10px 0;
+}
+#quantity_add .sub_text span {
+    width: unset;
+    padding: 5px 10px;
+    color:#051f67 !Important;
+}
+.quantity_cart {
+    border-radius: 5px !important;
+    display: inline-block;
+    width: 100%;
+    border: 1px solid #051f67;
+}
+span.euro {
+    float: left;
+    width: unset;
+    color: #ddd;
+    font-size: 18px;
+    margin-right: 10px;
+    top: -3px;
+    position: relative;
+}
+.word_range .euro {
+    font-size: 38px;
+    color: #051f67;
+}
+#accordion .card-header {
+    padding: 0px !important;
+
+}
+.debenhans_bit img {
+    width: 100%;
+        max-width: 200px;
+}
+#accordion .card {
+    border: none;
+    margin: 20px 0;
+}
+.word_range h2 {
+    font-weight: bold;
+    color:#051f67;
+}
+.word_range h3 {
+    font-size: 18px;
+    color: #000;
+    font-weight: bold;
+}
+#complete_order {
+       background: #051F67;
+    width: 100%;
+    color: #fff;
+    text-decoration: none;
+    margin: 20px 0;
+}
+.one_quantity {
+    border-right: 1px solid #051f67;
+    border-left: 1px solid #051f67;
+}
+.add_sub {
+    cursor: pointer;
+}
+
+
+/* complete order css end */
+
+
+/* Styles for wrapping the search box */
+
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+	height:48px;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 48px;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+.list_search {
+    display: inline-block;
+    width: 100%;
+    background: #F3F3F3;
+    padding: 20px 10px;
+	    cursor: pointer;
+}
+.store_name h6 {
+    color: #807979;
+    width: 350px;
+}
+.has-search .fa.fa-search.form-control-feedback {
+    color: #051D66;
+}
+.euor_market {
+    width: 30%;
+    display: inline-block;
+    border: 2px solid #ddd;
+    padding: 7px 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    color: #a9a9a9;
+	    float: left;
+}
+
+.search_card_form {
+    background: #fff;
+    padding: 30px 20px 20px;
+    border-radius: 10px;
+   
+    box-shadow: 5px 9px 6px #ededed;
+}
+.swapping_gift {
+    width: 100%;
+    display: inline-block;
+}
+.search_feedback {
+    position: relative;
+    top: -70px;
+    display: inline-block;
+    width: 100%;
+}
+.swapping_gift h3 {
+    color: #A3A3A3;
+}
+.swapping_gift h4 {
+    color: #A3A3A3;
+}
+.market_valuesee {
+    background: #051d66;
+    padding:10px;
+    display: inline-block;
+    width: 45%;
+    border-radius: 5px;
+    text-align: center;
+    color: #Fff;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 20px;
+	    cursor: pointer;
+}
+.market_valuesee:hover {
+    background: #28a745;
+}
+.euor_market input::placeholder {
+    color: #a9a9a9;
+}
+.euor_market input[type="text"] {
+    width: 65%;
+    border: none;
+	outline: none;
+	color: #a9a9a9;21
+}
+.euor_market span {
+    font-size: 20px;
+}
+span.line_euor {
+    margin: 0 6px 0 12px;
+    top: -2px;
+    position: relative;
+}
+#safe_quick {
+    display: inline-block;
+    width: 100%;
+    margin: 30px 0;
+}
+#curry_card {
+    margin: 20px 0;
+    display: inline-block;
+    width: 100%;
+}
+#curry_card img {
+    width: 100%;
+    max-width: 100%;
+}
+.gift_choosen {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+.swap_cards {
+    margin:0px 20px;
+}
+.swap_cards #review_checkout {
+    width: 30%;
+}
+.add_store i {
+    color: #051D66;
+    font-size: 40px;
+    float: left;
+    margin-right: 20px;
+}
+#group_list_add {
+    border: 1px solid #cccbcb;
+    display: none;
+    z-index: 999;
+    position: absolute;
+    width: 94%;
+	    background: #fff;
+}
+.add_store_list {
+    padding: 20px 10px;
+    display: inline-block;
+    width: 100%;
+	    border-top: 1px solid #cccbcb;
+}
+.card_name .card-img-top {
+    width: 100px;
+	float:left;
+	margin-right: 10px;
+}
+.steam_online span {
+    font-size: 14px;
+    color: #ddd;
+}
+.steam_online h6 {
+    font-weight: bold;
+    font-size: 20px;
+}
+.steam_online {
+    top: 5px;
+    position: relative;
+}
+#unmwanted_gift {
+    height: 50vh;
+    /* background-image: url(https://source.unsplash.com/BtbjCFUvBXs/1920x1080); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+	background-image: linear-gradient(to right, rgba(144, 18, 129, 0.59), rgb(39, 0, 255));
+}
+.market_valuesee:hover {
+    background: #28a745;
+}
+.swap_cards #review_checkout:hover {
+    background: #28a745;
+}
+
+@media screen and (max-width:1100px){
+	.container{width:100%;}
+}
+
+@media screen and (max-width:1024px){
+.euor_market input[type="text"] {
+    width: 55%;
+}
+.search_feedback {
+    top: -40px;
+}
+}
+@media screen and (max-width:767px){
+.card-txt {
+	width: auto;
+}
+.heading {
+	font-size: 22px;
+}
+.card-txt h2 {
+	font-size: 20px;
+}
+.card-txt h4 {
+	font-size: 16px;
+}
+.card-detail img {
+	height: 100%;
+}
+.card-detail {
+	padding: 0 15px;
+}
+	#unmwanted_gift {
+    height: 20vh;
+}
+}
+
+@media screen and (max-width:568px){
+	.swap_cards #review_checkout {
+    width: 30%;
+    margin: 0 auto;
+}
+.swap_cards {
+    width: 100%;
+    margin: 0 auto;
+    display: inline-grid;
+}
+.word_range h3 {
+    font-size: 13px;
+
+}
+.debenhans_bit img {
+    max-width: unset;
+}
+.debenhans_bit ul li {
+    font-size: 14px;
+}
+.word_range h2 {
+    font-size: 30px;
+}
+.word_range .euro {
+    font-size: 36px;
+}
+#curry_card .gift {
+    margin: 10px 0;
+}
+.euor_market {
+    width: 100%;
+}
+#unmwanted_gift h1 {
+    font-size: 20px;
+}
+.search_feedback {
+    top: -21px;
+}
+.market_valuesee {
+    font-size: 18px;
+    margin-left: 0px;
+    margin-top: 20px;
+    width:100%;
+}
+.swapping_gift h3 {
+    font-size: 20px;
+}
+.swapping_gift h4 {
+    font-size: 20px;
+}
+.swap_card {
+    width: 100%;
+}
+}
+
+
+

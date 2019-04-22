@@ -1,0 +1,121 @@
+.form-title {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px 0;
+}
+.form-group {
+  margin-bottom: 30px;
+}
+.wp-admin select {
+  height: 35px;
+  line-height: 28px;
+  padding: 2px;
+}
+.custom-file-upload {
+    position: relative;
+    overflow: hidden;
+    /*margin: 10px;*/
+   background: #07a9d6 none repeat scroll 0 0;
+    border-radius: 4px;
+    color: white;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    width: 20%;
+}
+.custom-file-upload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+label {
+  display: inline-block;
+  float: left;
+  font-weight: 700;
+  line-height: 20px;
+  margin-bottom: 5px;
+  max-width: 100%;
+  padding: 6px 10px 0 0;
+}
+#username{ width:27%; }
+.form-group.timep > label{ float:none !important; }
+			.form-title {
+			  font-size: 20px;
+			  font-weight: bold;
+			  padding: 20px 0;
+			}
+			.preview-container > form {
+			  width: 70%;
+			  margin: auto;
+			  border: 1px solid #ccc;
+			  padding: 30px;
+			}
+			.form-group {
+			  margin-bottom: 20px;
+			}
+			.wp-admin select {
+			  height: 35px;
+			  line-height: 28px;
+			  padding: 2px;
+			}
+#wpForm input{display:inline;}
+.wpform-error{ color:red;}
+.freq{ width:100px; display:inline;}
+.btn{ margin:20px 0px; }
+
+
+.form-title {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px 0;
+}
+.form-group {
+  margin-bottom: 30px;
+}
+.wp-admin select {
+  height: 35px;
+  line-height: 28px;
+  padding: 2px;
+}
+.custom-file-upload {
+    position: relative;
+    overflow: hidden;
+    /*margin: 10px;*/
+   background: #07a9d6 none repeat scroll 0 0;
+    border-radius: 4px;
+    color: white;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    width: 20%;
+}
+.custom-file-upload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+label {
+  display: inline-block;
+  float: left;
+  font-weight: 700;
+  line-height: 20px;
+  margin-bottom: 5px;
+  max-width: 100%;
+  padding: 6px 10px 0 0;
+}
+#username{ width:27%; display:inline;}
+.form-group.timep > label{ float:none !important; }

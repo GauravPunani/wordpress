@@ -1,0 +1,1451 @@
+<?php
+/**
+* Plugin Name: WP-Webform
+* Plugin URI: http://mypluginuri.com/
+* Description: A brief description about your plugin.
+* Version: 1.0 or whatever version of the plugin (pretty self explanatory)
+* Author: Plugin Author's Name
+* Author URI: Author's website
+* License: A "Slug" license name e.g. GPL12
+*/
+
+register_activation_hook( __FILE__, 'install' );
+register_deactivation_hook( __FILE__, 'uninstall' );
+
+add_action('admin_menu', 'wpform_setup_menu');
+
+function wpform_setup_menu(){
+        add_menu_page( 'WP Webform', 'WP Webform', 'manage_options', 'wp-webform', 'wpform_init' );
+	add_submenu_page( 'wp-webform', 'List', 'List', 'manage_options', 'List' , 'display_list');
+}
+
+function wpform_init(){
+	$msg="";
+	if(isset($_POST["submit_button"])){
+		$wpform_title_s1=$_POST["wpform_title_s1"];
+		$wpform_icon=$_FILES["wpform_icon"]["name"];
+		$wpform_marker_text=$_POST["wpform_marker_text"];
+		$wpform_title_s2=$_POST["wpform_title_s2"];
+		$wpform_opt_s2=json_encode($_POST["wpform_opt_s2"]);
+		$wpform_title_s3=$_POST["wpform_title_s3"];
+		$wpform_subtitle_s3=$_POST["wpform_subtitle_s3"];
+		$wpform_fontfamily=$_POST["wpform_fontfamily"];
+		
+		$btn_clr=$_POST["btn_clr"];
+		$wpformlayout = $_POST["wpform_layout"];
+		//if($wpformlayout == 1){
+			 $wpform_labels1 = json_encode($_POST["wpform-label1"]);
+
+		//}if($wpformlayout == 2){
+			$wpform_labels2 = json_encode($_POST["wpform-label2"]);
+
+		//}if($wpformlayout == 3){
+			$wpform_labels3 = json_encode($_POST["wpform-label3"]);
+
+		//}
+
+		update_option( 'wpform_title_s1', $wpform_title_s1);
+		if($wpform_icon != ""){
+		update_option( 'wpform_icon', $wpform_icon);
+		}
+		update_option( 'wpform_marker_text', $wpform_marker_text);
+		update_option( 'wpform_title_s2', $wpform_title_s2);
+		update_option( 'wpform_opt_s2', $wpform_opt_s2);
+		update_option( 'wpform_title_s3', $wpform_title_s3);
+		update_option( 'wpform_subtitle_s3', $wpform_subtitle_s3);
+		update_option( 'btn_clr', $btn_clr);
+		update_option( 'wpformlayout', $wpformlayout);
+		update_option( 'wpform_fontfamily', $wpform_fontfamily);
+		if($wpform_labels1 != 'null'){ 
+		update_option( 'wpform_labels1', $wpform_labels1);  
+		}if($wpform_labels2 != 'null'){ 
+		update_option( 'wpform_labels2', $wpform_labels2);
+		}if($wpform_labels3 != 'null'){ 
+		update_option( 'wpform_labels3', $wpform_labels3);
+		}
+		
+		update_option( 'wpform_sucessmsg', $_POST["wpform_sucessmsg"]);
+		update_option( 'wpform_titlefontsize', $_POST["wpform_titlefontsize"]);
+		update_option( 'wpform_titlefontwt', $_POST["wpform_titlefontwt"]);
+		update_option( 'wpform_contentfontsize', $_POST["wpform_contentfontsize"]);
+		update_option( 'wpform_contentfontwt', $_POST["wpform_contentfontwt"]);  
+		update_option( 'wpform_hidelabels', $_POST["wpform_hidelabels"]);
+
+
+		$msg= "Your changes has been saved.";
+$plugin_dir= dirname(__FILE__); 
+//echo "AAAA";
+$target_dir = $plugin_dir."/uploads/";
+ $target_file = $target_dir . basename($_FILES["wpform_icon"]["name"]);
+ $_FILES["wpform_icon"]["tmp_name"]; 
+ $path = $plugin_dir."/uploads/"; 
+ if (move_uploaded_file($_FILES["wpform_icon"]["tmp_name"], $target_file)) {
+        //echo "The file ". basename( $_FILES["wpform_icon"]["name"]). " has been uploaded.";
+    } 
+	}
+		$wpform_title_s1= get_option( 'wpform_title_s1');
+		$wpform_icon = get_option( 'wpform_icon');
+		$wpform_marker_text= get_option( 'wpform_marker_text');
+		$wpform_title_s2=get_option( 'wpform_title_s2');
+		 $wpform_opt_s2=get_option( 'wpform_opt_s2');
+		$wpform_title_s3=get_option( 'wpform_title_s3');
+		$wpform_subtitle_s3=get_option( 'wpform_subtitle_s3');
+		$btn_clr=get_option( 'btn_clr');
+		$wpformlayout = get_option( 'wpformlayout');
+		 $wpform_labels1 = get_option( 'wpform_labels1');
+		$wpform_labels2 = get_option( 'wpform_labels2');
+		$wpform_labels3 = get_option( 'wpform_labels3');
+		$wpformlayout=get_option( 'wpformlayout');
+		$wpform_sucessmsg=get_option( 'wpform_sucessmsg');
+	
+
+		$wpform_titlefontsize = get_option( 'wpform_titlefontsize');
+		$wpform_titlefontwt = get_option( 'wpform_titlefontwt');
+		$wpform_contentfontsize = get_option( 'wpform_contentfontsize');
+		$wpform_contentfontwt = get_option( 'wpform_contentfontwt');
+		$wpform_hidelabels = get_option( 'wpform_hidelabels');
+
+
+		$wpform_labels1_arr = json_decode( $wpform_labels1);
+		$wpform_labels2_arr = json_decode( $wpform_labels2);
+		$wpform_labels3_arr = json_decode( $wpform_labels3);
+	?>
+
+	<h3>Settings</h3>
+	
+<div>Use shortcode [multistep_form] to embed the form.</div>
+	<div class="success-msg"><?php echo $msg; ?></div>
+	  <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="">
+		<h4>Step 1</h4>
+	  <div class="form-group">
+	    <label class="control-label col-sm-2" for="title">Title:</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="wpform_title" name="wpform_title_s1" placeholder="" value="<?php echo $wpform_title_s1; ?>">
+	    </div>
+	  </div>
+	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Marker Icon:</label>
+	    <div class="col-sm-6">
+	      <input type="file" class="" id="wpform_icon" name="wpform_icon" placeholder="" value="<?php echo $wpform_icon; ?>">
+	    </div>
+	  </div>
+	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Marker Text:</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="wpform_marker_text" name="wpform_marker_text" placeholder="" value="<?php echo $wpform_marker_text; ?>">
+	    </div>
+	  </div>
+<hr>
+<h4>Step 2</h4>
+	  <div class="form-group">
+	    <label class="control-label col-sm-2" for="email"> Title:</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="wpform_title" name="wpform_title_s2" placeholder="" value="<?php echo $wpform_title_s2; ?>">
+	    </div>
+	  </div>
+
+	  <div class="form-group">
+	    <label class="control-label col-sm-2" for="email"> Add Options:</label>
+	    <?php $wpform_opt_s2_arr=json_decode($wpform_opt_s2); //print_r($wpform_opt_s2_arr); ?>
+	    <div class="col-sm-6 options">
+		
+	      <input type="text" class="form-control" id="wpform_title" name="wpform_opt_s2[]" placeholder="" value="<?php echo $wpform_opt_s2_arr[0]; ?>">
+	    </div>
+		<?php
+		$i=1; $j=2;
+		foreach($wpform_opt_s2_arr as $wpform_s2opt){ 
+		if($wpform_opt_s2_arr[$i] != ""){
+		?><div id="TextBoxDiv<?php echo $j; ?>" class="col-md-12 TextBox"><label class="col-md-2">Option #<?php echo $i+1; ?> : </label><div class="col-sm-6 options">
+		
+	      <input type="text" class="form-control" id="wpform_title" name="wpform_opt_s2[]" placeholder="" value="<?php echo $wpform_opt_s2_arr[$i]; ?>">
+	    </div><input type="button" value="Remove" class="removeButton" onclick="remove('<?php echo $j; ?>');">
+		</div>
+
+		<?php } $i++; $j++;  }
+
+
+		?>
+		<div id="TextBoxesGroup"></div>
+		<input type="button" value="Add" id="addButton">
+	  </div>
+
+
+
+<hr>
+<h4>Step 3</h4>
+	  <div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Title:</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="wpform_title" name="wpform_title_s3" placeholder="" value="<?php echo $wpform_title_s3; ?>">
+	    </div>
+	  </div>
+	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Sub-title:</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="wpform_title" name="wpform_subtitle_s3" placeholder="" value="<?php echo $wpform_subtitle_s3; ?>">
+	    </div>
+	  </div>
+	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Select Form Layout:</label>
+	    <div class="col-sm-6">
+	      <select class="form-control" name="wpform_layout" onchange="changeLayout(this.value);">
+
+			<option value="1" <?php if($wpformlayout == "1"){ echo "selected"; }   ?> >Layout 1</option>
+			<option value="2" <?php if($wpformlayout == "2"){ echo "selected"; }   ?>>Layout 2</option>
+			<option value="3" <?php if($wpformlayout == "3"){ echo "selected"; }   ?>>Layout 3</option>
+	      </select>
+	    </div>
+	  </div>
+	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Hide Labels:</label>
+	    <div class="col-sm-6">
+	     	<input type="checkbox" name="wpform_hidelabels" id="wpform_hidelabels" value="1" <?php if($wpform_hidelabels == 1){ echo "checked"; } ?> >
+	    </div>
+	  </div>
+
+
+
+
+		<div class="innerDiv form-layout">
+			<p><a href="javascript:void(0);" onclick="editLabels();" class="edit-btn1" >Click here to edit labels</a></p>
+			
+			<div class="layout1">
+			  <div class="form-group">
+			    <label class="control-label col-sm-2" for="email"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels1_arr[0]; ?>" disabled="disbaled" name="wpform-label1[]"></label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label class="control-label col-sm-2" for="pwd"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels1_arr[1]; ?>" disabled="disbaled" name="wpform-label1[]"></label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="lastname" placeholder=""name="lastname">
+			    </div>
+			  </div>
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="pwd"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels1_arr[2]; ?>" disabled="disbaled" name="wpform-label1[]"></label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="email" placeholder="" name="email">
+			    </div>
+			  </div>
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="pwd"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels1_arr[3]; ?>" disabled="disbaled"name="wpform-label1[]"></label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="phone" placeholder="" name="phone">
+			    </div>
+			  </div>
+			<!--<div class="form-group">
+			    <label class="control-label col-sm-2" for="pwd">&nbsp;</label>
+			    <div class="col-sm-10">
+			      <input type="checkbox" class="" id="project_info" name="project_info" placeholder="" value="1"><span>Yes,I would like free project cost information.</span>
+			    </div>
+			  </div>-->
+			</div>
+			
+
+			<div class="layout2">
+			  <div class="form-group">
+			    <label class="control-label col-sm-5" for="email"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels2_arr[0]; ?>" disabled="disabled" name="wpform-label2[]"></label>
+			    <div class="col-sm-7">
+			      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label class="control-label col-sm-5" for="pwd"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels2_arr[1]; ?>" disabled="disabled" name="wpform-label2[]"></label>
+			    <div class="col-sm-7">
+			      <input type="text" class="form-control" id="lastname" placeholder=""name="lastname">
+			    </div>
+			  </div>
+			<div class="form-group">
+			    <label class="control-label col-sm-5" for="pwd"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels2_arr[2]; ?>" disabled="disabled" name="wpform-label2[]"></label>
+			    <div class="col-sm-7">
+			      <input type="text" class="form-control" id="email" placeholder="" name="email">
+			    </div>
+			  </div>
+			<div class="form-group">
+			    <label class="control-label col-sm-5" for="pwd"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels2_arr[3]; ?>" disabled="disabled" name="wpform-label2[]"></label>
+			    <div class="col-sm-7">
+			      <input type="text" class="form-control" id="phone" placeholder="" name="phone">
+			    </div>
+			  </div>
+			<!--<div class="form-group">
+			 <label class="control-label col-sm-1" for="pwd"></label>
+			    <div class="col-sm-11">
+			      <input type="checkbox" class="" id="project_info" name="project_info" placeholder="" value="1"><span>Yes,I would like free project cost information.</span>
+			    </div>
+			  </div>-->
+			</div>
+
+
+
+			<div class="layout3">
+			  <div class="form-group">
+			    <label class="control-label col-sm-3" for="email"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels3_arr[0]; ?>" disabled="disabled" name="wpform-label3[]"></label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="">
+			    </div>
+			  </div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-3" for="pwd"><input class="control-label col-sm-12" type ="text" value="<?php echo $wpform_labels3_arr[1]; ?>" disabled="disabled" name="wpform-label3[]"></label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" id="email" placeholder="" name="email">
+			    </div>
+			  </div>
+			<!--<div class="form-group">
+			    <label class="control-label col-sm-2" for="pwd">&nbsp;</label>
+			    <div class="col-sm-10">
+			      <input type="checkbox" class="" id="project_info" name="project_info" placeholder="" value="1"><span>Yes,I would like free project cost information.</span>
+			    </div>
+			  </div>-->
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+<h4>Design Options</h4>
+	 <div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Button Color:</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="btn_clr" name="btn_clr" placeholder="" value="<?php echo $btn_clr; ?>">
+	    </div>
+	  </div>
+ 	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Font Family:</label>
+	    <div class="col-sm-6">
+	      <select name="wpform_fontfamily" id="wpform_fontfamily" class="form-control">
+			<option <?php if($wpform_fontfamily == "Arial"){ echo "selected"; } ?> >Arial</option>
+			<option <?php if($wpform_fontfamily == "Comic Sans MS"){ echo "selected"; } ?> >Comic Sans MS</option>
+			<option <?php if($wpform_fontfamily == "Trebuchet MS"){ echo "selected"; } ?> >Trebuchet MS</option>
+			<option <?php if($wpform_fontfamily == "Verdana"){ echo "selected"; } ?> >Verdana</option
+			<option <?php if($wpform_fontfamily == "Times New Roman"){ echo "selected"; } ?> >Times New Roman</option>
+			<option <?php if($wpform_fontfamily == "Georgia"){ echo "selected"; } ?> >Georgia</option>
+			<option <?php if($wpform_fontfamily == "Sans-Serif"){ echo "selected"; } ?> >Sans-Serif</option>
+			<option <?php if($wpform_fontfamily == "Helvetica"){ echo "selected"; } ?> >Helvetica</option>
+			<option <?php if($wpform_fontfamily == "Lucida Sans Unicode"){ echo "selected"; } ?> >Lucida Sans Unicode</option>
+			<option <?php if($wpform_fontfamily == "Tahoma"){ echo "selected"; } ?> >Tahoma</option>
+			<option <?php if($wpform_fontfamily == "Courier New"){ echo "selected"; } ?> >Courier New</option>
+			<option <?php if($wpform_fontfamily == "Montserrat"){ echo "selected"; } ?> >Montserrat</option>
+		</select>
+	    </div>
+	  </div>
+
+ 	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Title Font Size:</label>
+	    <div class="col-sm-2">
+	      <select name="wpform_titlefontsize" id="wpform_titlefontsize" class="form-control">
+			<option <?php if($wpform_titlefontsize == "10"){ echo "selected"; } ?> value="10">10 px</option>
+			<option <?php if($wpform_titlefontsize == "12"){ echo "selected"; } ?> value="12">12 px</option>
+			<option <?php if($wpform_titlefontsize == "14"){ echo "selected"; } ?> value="14">14 px</option>
+			<option <?php if($wpform_titlefontsize == "16"){ echo "selected"; } ?> value="16">16 px</option>
+			<option <?php if($wpform_titlefontsize == "18"){ echo "selected"; } ?> value="18">18 px</option>
+			<option <?php if($wpform_titlefontsize == "20"){ echo "selected"; } ?> value="20">20 px</option>
+			<option <?php if($wpform_titlefontsize == "22"){ echo "selected"; } ?> value="22">22 px</option>
+			<option <?php if($wpform_titlefontsize == "24"){ echo "selected"; } ?> value="24">24 px</option>
+			<option <?php if($wpform_titlefontsize == "26"){ echo "selected"; } ?> value="26">26 px</option>
+			<option <?php if($wpform_titlefontsize == "28"){ echo "selected"; } ?> value="28">28 px</option>
+			<option <?php if($wpform_titlefontsize == "30"){ echo "selected"; } ?> value="30">30 px</option>
+			<option <?php if($wpform_titlefontsize == "32"){ echo "selected"; } ?> value="32">32 px</option>
+		</select>
+	    </div>
+	  </div>
+
+ 	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Title Font Weight:</label>
+	    <div class="col-sm-2">
+	      <select name="wpform_titlefontwt" id="wpform_titlefontwt" class="form-control">
+			<option <?php if($wpform_titlefontwt == "Normal"){ echo "selected"; } ?> >Normal</option>
+			<option <?php if($wpform_titlefontwt == "Bold"){ echo "selected"; } ?> >Bold</option>
+
+		</select>
+	    </div>
+	  </div>
+
+ 	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Content Font Size:</label>
+	    <div class="col-sm-2">
+	      <select name="wpform_contentfontsize" id="wpform_contentfontsize" class="form-control">
+			<option <?php if($wpform_contentfontsize == "10"){ echo "selected"; } ?> value="10">10 px</option>
+			<option <?php if($wpform_contentfontsize == "12"){ echo "selected"; } ?> value="12">12 px</option>
+			<option <?php if($wpform_contentfontsize == "14"){ echo "selected"; } ?> value="14">14 px</option>
+			<option <?php if($wpform_contentfontsize == "16"){ echo "selected"; } ?> value="16">16 px</option>
+			<option <?php if($wpform_contentfontsize == "18"){ echo "selected"; } ?> value="18">18 px</option>
+			<option <?php if($wpform_contentfontsize == "20"){ echo "selected"; } ?> value="20">20 px</option>
+			<option <?php if($wpform_contentfontsize == "22"){ echo "selected"; } ?> value="22">22 px</option>
+			<option <?php if($wpform_contentfontsize == "24"){ echo "selected"; } ?> value="24">24 px</option>
+			<option <?php if($wpform_contentfontsize == "26"){ echo "selected"; } ?> value="26">26 px</option>
+			<option <?php if($wpform_contentfontsize == "28"){ echo "selected"; } ?> value="28">28 px</option>
+			<option <?php if($wpform_contentfontsize == "30"){ echo "selected"; } ?> value="30">30 px</option>
+			<option <?php if($wpform_contentfontsize == "32"){ echo "selected"; } ?> value="32">32 px</option>
+		</select>
+	    </div>
+	  </div>
+
+
+ 	<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Content Font Weight:</label>
+	    <div class="col-sm-2">
+	      <select name="wpform_contentfontwt" id="wpform_contentfontwt" class="form-control">
+			<option <?php if($wpform_contentfontwt == "Normal"){ echo "selected"; } ?> >Normal</option>
+			<option <?php if($wpform_contentfontwt == "Bold"){ echo "selected"; } ?> >Bold</option>
+
+		</select>
+	    </div>
+	  </div>
+<div class="form-group">
+	    <label class="control-label col-sm-2" for="email">Success Message Text:</label>
+	    <div class="col-sm-8">
+	       <textarea class="form-control" name="wpform_sucessmsg"><?php echo $wpform_sucessmsg; ?></textarea>
+	    </div>
+	  </div>
+
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-10">
+	      <button type="submit" name="submit_button" class="btn btn-default">Save Changes</button>
+	    </div>
+	  </div>
+
+	</form> 
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+<script type="text/javascript">
+
+jQuery(document).ready(function(){ 
+
+   
+
+    jQuery("#addButton").click(function () {
+ var counter = jQuery(".TextBox").length+2; 
+	if(counter>10){
+            alert("Only 10 textboxes allow");
+            return false;
+	}
+
+	var newTextBoxDiv = jQuery(document.createElement('div'))
+	     .attr("id", 'TextBoxDiv' + counter);
+	newTextBoxDiv.addClass("col-md-12 TextBox");
+	newTextBoxDiv.after().html('<label class="col-md-2">Option #'+ counter + ' : </label>' +
+	      '<div class="col-md-6"><input type="text" class="form-control" name="wpform_opt_s2[]" id="textbox' + counter + '" value=""></div><input type="button" value="Remove" class="removeButton" onclick="remove('+counter+');">');
+
+	newTextBoxDiv.appendTo("#TextBoxesGroup");
+
+
+	counter++;
+     });
+
+     jQuery(".removeButton").click(function () { //alert(counter);
+	if(counter==1){
+          alert("No more textbox to remove");
+          return false;
+       }
+
+	counter--;
+
+        jQuery("#TextBoxDiv" + counter).remove();
+
+     });
+
+     jQuery("#getButtonValue").click(function () {
+
+	var msg = '';
+	for(i=1; i<counter; i++){
+   	  msg += "\n Textbox #" + i + " : " + jQuery('#textbox' + i).val();
+	}
+    	  alert(msg);
+     });
+  });
+
+function remove(counter){
+ //alert(counter);
+	if(counter==1){
+          alert("No more textbox to remove");
+          return false;
+       }
+
+	
+
+        jQuery("#TextBoxDiv" + counter).remove();counter--;
+
+
+}
+function editLabels(){
+
+	jQuery(".form-layout input").removeAttr("disabled");
+}
+
+function changeLayout(val){
+	if(val == "1"){
+		jQuery(".layout1").show();
+		jQuery(".layout2").hide();
+		jQuery(".layout3").hide();
+
+	}else if(val == "2"){
+		jQuery(".layout2").show();
+		jQuery(".layout1").hide();
+		jQuery(".layout3").hide();
+
+	}else if(val == "3"){
+		jQuery(".layout3").show();
+		jQuery(".layout2").hide();
+		jQuery(".layout1").hide();
+	}
+}
+</script>
+<style>
+.form-horizontal {
+  font-family: Times New Roman;
+}
+.innerDiv.form-layout > p {
+  float: right;
+  width: 100%;
+  text-align: right;
+}
+.TextBox label {
+  padding-right: 25px;
+  text-align: right;
+}
+.layout3 label { text-align:left !important; }
+input[type="checkbox"], input[type="radio"] {
+  line-height: normal;
+  margin: 4px -3px 3px;
+}.layout2 .col-sm-11 > span {
+  float: right;
+  line-height: 35px;
+}
+.layout2 .form-horizontal .control-label {
+  margin-bottom: 0;
+  margin-right: -15px;
+  padding-top: 7px;
+  text-align: center;
+}
+.control-label.col-sm-5 {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+.layout2 .form-group{ width:48%; float:left; }
+.layout2{ display:none; height:200px;} 
+.layout3{ display:none;} 
+button[disabled], html input[disabled] {
+    border: medium none;
+    box-shadow: none;
+    color: #333;
+    cursor: default;
+    font-weight: bold !important;
+}
+.edit-btn{ float:right; }
+.form-layout{ width:80%;padding:20px; border:1px solid #ccc; }
+.TextBox {
+  padding-top: 10px;
+}
+
+.TextBox .col-md-6 {
+  padding-left: 5px;
+  padding-right: 10px;
+}
+.success-msg{
+  text-align: center;
+  color: green;
+}
+.TextBox .options {
+  padding-left: 5px;
+  padding-right: 10px;
+}
+</style>
+
+
+<?php $plugin_path=plugins_url()."/WP-FORM/"; ?>
+
+	<div class="preview-container">
+
+<?php
+  wp_register_style('customstyle',plugins_url('css/custom11.css', __FILE__) );
+  wp_enqueue_style( 'customstyle' ); 
+
+  wp_register_style('timepickercss',plugins_url('css/jquery.timepicker.css', __FILE__) );
+  wp_enqueue_style( 'timepickercss' ); 
+  wp_register_style('bootstrapcss',plugins_url('css/bootstrap.min.css', __FILE__) );
+  wp_enqueue_style( 'bootstrapcss' ); 
+  wp_register_style('jqueryuicss',plugins_url('css/jquery-ui.css', __FILE__) );
+  wp_enqueue_style( 'jqueryuicss' ); 
+
+  wp_register_script('timepickerjs',plugins_url('js/jquery.timepicker.js', __FILE__) );
+  wp_enqueue_script( 'timepickerjs' ); 
+  wp_register_script('jquery-1.12.4',plugins_url('js/jquery-1.12.4.js', __FILE__) );
+  wp_enqueue_script( 'jquery-1.12.4' ); 
+  wp_register_script('jquery-ui',plugins_url('js/jquery-ui.js', __FILE__) );
+  wp_enqueue_script( 'jquery-ui' ); 
+
+
+?>
+
+<?php $plugin_path=plugins_url()."/WP-FORM/"; ?>
+			<style>
+.preview-container {
+  pointer-events: none;
+}
+			.freq{ width:100px !important; display:inline !important;}
+.btn{ margin:20px 0px; }
+.timepicker {
+  background: #f0f4f7 url("<?php echo $plugin_path; ?>/images/ico-clock.png") no-repeat scroll 90% 8px !important;
+  border: medium none;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #191919;
+  cursor: pointer;
+  font-size: 14px;
+  height: 33px;
+  line-height: 33px;
+  padding: 0 35px 0 10px ;
+
+}
+.datepicker {
+  background: #f0f4f7 url("<?php echo $plugin_path; ?>/images/ico-date.png") no-repeat scroll 94% 8px !important;
+  border: medium none;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #191919;
+  cursor: pointer;
+  font-size: 14px;
+  height: 33px;
+  line-height: 33px;
+  padding: 0 35px 0 10px;
+  position: relative;
+  width:177px !important;
+}
+.form-title {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px 0;
+}
+.form-group {
+  margin-bottom: 30px !important;
+}
+.wp-admin select {
+  height: 35px;
+  line-height: 28px;
+  padding: 2px;
+}
+.custom-file-upload {
+    position: relative;
+    overflow: hidden;
+    /*margin: 10px;*/
+   background: #07a9d6 none repeat scroll 0 0;
+    border-radius: 4px;
+    color: white;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    width: 20%;
+}
+.custom-file-upload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+label {
+  display: inline-block;
+  float: left;
+  font-weight: 700;
+  line-height: 20px;
+  margin-bottom: 5px;
+  max-width: 100%;
+  padding: 6px 10px 0 0;
+}
+#username{ width:27%; }
+.form-group.timep > label{ float:none !important; }
+			.form-title {
+			  font-size: 20px;
+			  font-weight: bold;
+			  padding: 20px 0;
+			}
+			.preview-container > form {
+			  width: 70%;
+			  margin: auto;
+			  border: 1px solid #ccc;
+			  padding: 30px;
+			}
+			.form-group {
+			  margin-bottom: 20px;
+			}
+			.wp-admin select {
+			  height: 35px;
+			  line-height: 28px;
+			  padding: 2px;
+			}
+
+			</style>
+
+	</div>
+<style>
+.btn { background-color:#0073AA!important;color:white!important; }
+
+</style>
+<?php
+}
+
+function display_list(){
+$msg="";
+global $wpdb;
+if(isset($_REQUEST["action"]) && isset($_REQUEST["tid"])){	// Delete Row
+	if($_REQUEST["action"] == "del"){
+		$tid=$_REQUEST["tid"];
+		$table_name=$wpdb->prefix."wpform_entries";
+		$res=$wpdb->delete( $table_name, array( 'id' =>$tid) );
+		if($res){
+			$msg="Successfully Deleted !!";
+			
+		}
+		
+	}
+}
+if(isset($_REQUEST["action"])){
+
+	if($_REQUEST["action"] == "del_all"){
+		$tid=$_REQUEST["tid"];
+		$table_name=$wpdb->prefix."wpform_entries";
+		$res=$wpdb->query("TRUNCATE TABLE $table_name");
+		if($res){
+			$msg="Successfully Deleted !!";
+		}
+		$path=site_url()."/wp-admin/admin.php?page=List";
+		header("location:".$path);
+	}
+
+}
+if(isset($_POST["del_row"])){
+	$del_row = $_POST["del_row"];
+	$del_row=implode(",",$del_row);
+	$table_name=$wpdb->prefix."wpform_entries";		
+	$res=$wpdb->query( "DELETE FROM $table_name WHERE Id IN($del_row)" );
+	if($res){
+		$msg="Successfully Deleted !!";
+	}
+
+
+}
+?>
+<script>
+jQuery(document).ready(function () {
+    jQuery(".ckbCheckAll").click(function () {
+        jQuery(".checkBoxClass").prop('checked', jQuery(this).prop('checked'));
+    });
+});
+</script>
+	<div class="container">
+	<!--<a class="btn button btn-lg btn-default del-btn" href="?page=List&action=del_all">Delete All</a>
+	<a class="btn button btn-lg btn-default del-btn" onclick="jQuery('#form-list').submit();">Delete Selected</a>-->
+	<h3>List of Form Entries</h3>
+	<div class="msg"><?php echo $msg; ?></div>
+	<form method="POST" action="" id="form-list">
+	<table class="wp-list-table widefat fixed striped posts">
+
+	<tfoot>
+	<tr>
+	<!--<th class="manage-column column-eafl_clicks" scope="col" style="width:18px";><input type="checkbox" class="ckbCheckAll" name=""></th>-->
+	<th class="manage-column column-eafl_clicks" scope="col" style="width:80px";>
+	Sr.No.
+	</th>
+	<th class="manage-column column-eafl_clicks" scope="col">First Name</th>
+	<th class="manage-column column-eafl_clicks" scope="col">Last Name</th>
+	<th class="manage-column column-eafl_clicks" scope="col">Email</th>
+	<th class="manage-column column-eafl_clicks" scope="col">Phone</th>
+	<th class="manage-column column-eafl_clicks" scope="col">Location</th>
+	<th class="manage-column column-eafl_clicks" scope="col">Nature of Project</th>
+
+	</tr>
+	<?php
+
+	global $wpdb;
+	$pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
+	$limit   = 100;
+	$offset  = ( $pagenum - 1 ) * $limit;
+	$table_name = $wpdb->prefix . 'webform_data';
+	$zipcode_table = $wpdb->prefix . 'wpform_zipcodes';
+	$results  = $wpdb->get_results( "SELECT * FROM $table_name LIMIT $offset, $limit" );
+	//print_r($results);
+	if( $results ) {
+	$count=$offset; 
+	foreach($results as $result){ $count++;
+	$id = $result->id;
+	$firstname = $result->firstname;
+	$lastname = $result->lastname;
+	$email = $result->email;
+	$phone = $result->phone;
+	$zipcode = $result->zipcode;
+	$step2_opt = $result->step2_opt;
+
+	$row = $wpdb->get_row('Select * from '.$zipcode_table.' where zipcode = '.$zipcode);
+	?>
+	<tr class="ui-sortable-handle assisan_task">
+	<!--<td class ="td-name" id= "user_mnu1" style="text-align:left;" ><input type="checkbox" class="checkBoxClass" name="del_row[]" value="<?php echo $id; ?>"></td>-->
+	<td class ="td-name" id= "user_mnu1" style="text-align:left;" ><?php echo $count;?></td>
+	<td class ="td-name" id= "user_mnu3" contenteditable="false"><?php echo urldecode($firstname); ?></td>
+	<td class ="td-name" id= "user_mnu3" contenteditable="false"><?php echo urldecode($lastname); ?></td>
+	<td class ="td-name" id= "user_mnu3" contenteditable="false"><?php echo urldecode($email); ?></td>
+	<td class ="td-name" id= "user_mnu3" contenteditable="false"><?php echo urldecode($phone); ?></td>
+	<td class ="td-name" id= "user_mnu3" contenteditable="false"><?php echo $row->city.", ".$row->state_code; ?></td>
+	<td class ="td-name" id= "user_mnu3" contenteditable="false"><?php echo urldecode($step2_opt); ?></td>
+	<!--<td class ="td-name" id= "user_mnu3" contenteditable="false">
+	<?php 
+
+	$file=$plugin_path.$files;
+	if($files != ""){ 
+	?><img src="<?php echo $file; ?>" width="50"><?php } else { echo "No Image"; }
+?>
+</td>-->
+	<td class ="td-name" id= "user_mnu1" style="text-align:left;" ><?php //echo $count;?></td>
+	<!--<td class ="td-name" id= "user_mnu1" style="text-align:left;" ><a href="?tid=<?php echo $id; ?>&page=List&action=del">Delete</a></td>-->
+	</tr>
+	<?php
+	
+	//}
+?>
+
+	<?php //$count++; 
+	} } else{  ?> <td class ="td-name" id= "user_mnu1" colspan="10" style="text-align:center;" >No Records Found.</td>  <?php    }  ?>
+	</tfoot>
+
+</table>
+</form>
+<?php  $path=site_url().'/wp-content/plugins/WP-FORM/download.php'; ?>
+<!--<a href="<?php echo $path; ?>" class="button btn btn-success" >Export as CSV</a>-->
+<style>.hndle a, .widefat tfoot td, .widefat th, .widefat thead td {
+  font-weight: 400;
+ // width: 170px;
+}
+.wp-list-table td { text-align:left; }
+.btn.button.btn-lg.del-btn {
+  background: #0073aa none repeat scroll 0 0 !important;
+  color: #fff;
+  float: right;
+  margin: 10px;
+}
+.msg {
+  color: green;
+  padding: 10px;
+  text-align: center;
+}
+.button.btn.btn-success {
+  background: #0073aa none repeat scroll 0 0 !important;
+  color: white;
+}
+.tablenav {
+  margin: 6px 10px 4px;
+
+}
+</style>
+<?php $total  = $wpdb->get_var( "SELECT COUNT('id') FROM $table_name" );
+	$num_of_pages = ceil( $total / $limit );
+	$page_links   = paginate_links( array(
+        'base'      => add_query_arg( 'pagenum', '%#%' ),
+        'format'    => '',
+        'prev_text' => __( '&laquo;', 'aag' ),
+        'next_text' => __( '&raquo;', 'aag' ),
+        'total'     => $num_of_pages,
+        'current'   => $pagenum
+) );
+
+if ( $page_links ) {
+    echo '<div class="tablenav"><div class="tablenav-pages" style="margin: 1em 0">' . $page_links . '</div></div>';
+}
+
+}
+
+
+function install(){
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . 'wpform_zipcodes';
+	$webform_data_table = $wpdb->prefix . 'webform_data';
+
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$sql = "CREATE TABLE IF NOT EXISTS ".$table_name." (
+	  `id` int(11) NOT NULL AUTO_INCREMENT,
+	  `zipcode` varchar(100) NOT NULL,
+	  `city` varchar(100) NOT NULL,
+	  `state_code` varchar(100) NOT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;";
+
+	 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	 dbDelta( $sql ); 
+
+	$sql1 = "CREATE TABLE IF NOT EXISTS ".$webform_data_table." (
+	  `id` int(11) NOT NULL AUTO_INCREMENT,
+	  `zipcode` varchar(100) NOT NULL,
+	  `step2_opt` varchar(100) NOT NULL,
+	   `firstname` varchar(100) NOT NULL,
+	`lastname` varchar(100) NOT NULL,
+	`phone` varchar(100) NOT NULL,
+	`email` varchar(100) NOT NULL,
+	  `project_info` varchar(100) NOT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;";
+
+	dbDelta( $sql1 ); 
+
+
+	$delete = $wpdb->query("TRUNCATE TABLE ".$table_name);
+	$plugin_path=plugins_url()."/WP-Webform/"; 
+	$lines = file($plugin_path.'ZIPBRONZE.txt');
+	foreach($lines as $line){
+
+		$line_arr = explode(",",$line);
+		$zipcode = $line_arr[0];
+		$city = $line_arr[1];
+		$state_code = $line_arr[2];
+		$wpdb->insert($table_name, array(
+			    'zipcode' => $zipcode,
+			    'city' => $city,
+			    'state_code' => $state_code, 
+			));
+
+	}
+	/*update_option( 'wpform_title_s1', " What is the location of your project? ");
+	update_option( 'wpform_marker_text', "Zip Code");
+	update_option( 'wpform_title_s2', "What is the nature of this project? *");
+	update_option( 'wpform_opt_s2', '["Completely replace roof","Install roof on new construction"," Repair existing roof"] ');
+	update_option( 'wpform_title_s3', "We have matching metal roof contractors in your area !");
+	update_option( 'wpform_subtitle_s3', "Get quotes from up to 4 prescreened pros now");
+	update_option( 'wpformlayout', "1");
+
+	update_option( 'btn_clr', "#49a1a7");
+	update_option( 'wpform_fontfamily', "Helvetica");
+	update_option( 'wpform_titlefontsize', "18");
+	update_option( 'wpform_titlefontwt', "Bold");
+	update_option( 'wpform_contentfontsize', "14");
+	update_option( 'wpform_contentfontwt', "Normal "); */
+
+	update_option( 'wpformlayout', "1");
+	update_option( 'wpform_fontfamily', "Montserrat");
+	update_option( 'wpform_labels1', '["First Name *","Last Name *","Email","Phone"]'); 
+	update_option( 'wpform_labels2','["First Name *","Last Name *","Email","Phone"]'); 
+	update_option( 'wpform_labels3', '["Name","Email/Phone"] '); 
+
+}
+
+function uninstall(){
+}
+
+
+
+
+
+function multistep_form(){
+$wpform_title_s1= get_option( 'wpform_title_s1');
+$wpform_marker_text= get_option( 'wpform_marker_text');
+$wpform_title_s2= get_option( 'wpform_title_s2');
+$wpform_title_s3= get_option( 'wpform_title_s3');
+$wpform_subtitle_s3= get_option( 'wpform_subtitle_s3');
+ $btn_clr= get_option( 'btn_clr');
+  $wpform_icon= get_option( 'wpform_icon');
+  $wpform_fontfamily= get_option( 'wpform_fontfamily');
+if(empty($wpform_fontfamily)){
+$wpform_fontfamily='"Montserrat",Helvetica,"Helvetica Neue",Arial,serif';
+}
+$wpformlayout=get_option( 'wpformlayout');
+ $wpform_hidelabels = get_option( 'wpform_hidelabels');
+ $wpform_labels1 = get_option( 'wpform_labels1');
+		$wpform_labels2 = get_option( 'wpform_labels2');
+		$wpform_labels3 = get_option( 'wpform_labels3');
+	
+		$wpform_labels1_arr = json_decode( $wpform_labels1);
+		$wpform_labels2_arr = json_decode( $wpform_labels2);
+		$wpform_labels3_arr = json_decode( $wpform_labels3);
+
+
+		$wpform_titlefontsize = get_option( 'wpform_titlefontsize');
+		$wpform_titlefontwt = get_option( 'wpform_titlefontwt');
+		$wpform_contentfontsize = get_option( 'wpform_contentfontsize');
+		$wpform_contentfontwt = get_option( 'wpform_contentfontwt');
+
+$wpform_sucessmsg=get_option( 'wpform_sucessmsg');
+?><?php $plugin_upload_path=plugins_url()."/WP-Webform/uploads/"; 
+$plugin_path=plugins_url()."/WP-Webform/"; 
+?>
+
+<?php
+
+$res="";
+include("handle_form_submission.php");
+?>
+<div class="wpform_container">
+	<div class="step1">
+		<form class="form-horizontal" method="POST" action="" id="multistep-webform">
+		<?php //echo $res; ?>
+		<?php if($res == 1){   ?>
+			<div class="success-msg"><?php echo $wpform_sucessmsg; ?> 
+			</div>
+		<?php } else { ?>
+		<h4 class="title"><?php echo $wpform_title_s1; ?></h4>
+		<div class="zipcode">
+		<?php  $plugin_path.$wpform_icon; ?>
+		<?php if(empty($wpform_icon)){ ?>
+		<img src="<?php echo $plugin_path; ?>/icon.png" height="60" width="60">
+
+		<?php } else { ?>
+	
+		<img src="<?php echo $plugin_upload_path.$wpform_icon; ?>" height="60" width="60">
+
+		<?php } ?>
+		<div class="marker-text"><?php echo $wpform_marker_text; ?></div>
+		<div class="s1_form"><input type="text" placeholder="Enter Zip Code" name="zipcode" id="zipcode"></div>
+		</div>
+		<hr>
+		<div class="nxt"><input type="button" value="NEXT" id="next_btn" class="next_btn"></div>
+		<?php } ?>
+	</div>
+	
+	<div class="step2">
+		<h4 class="title"><?php echo $wpform_title_s2; ?></h4>
+		<div class="innerDiv">
+<?php  $wpform_opt_s2 = get_option( 'wpform_opt_s2'); 
+					$wpform_opt_s2_arr = json_decode( $wpform_opt_s2 );
+			foreach($wpform_opt_s2_arr as $wpform_opt){
+			?><div><input type ="radio" name="wpform_opt"  class="chkbox" checked value="<?php echo $wpform_opt; ?>"><span><?php echo $wpform_opt; ?></span></div>
+
+			<?php } ?>
+			
+			<!--<div><input type ="radio" name="wpform_opt" checked value="Completely replace roof">Completely replace roof</div>
+			<div><input type ="radio" name="wpform_opt" value="Install roof on new construction">Install roof on new construction</div>
+			<div><input type ="radio" name="wpform_opt" value="Repair existing roof">Repair existing roof</div>-->
+		</div>
+		<hr>
+		<div class="nxt"><!--<input type="button" value="PREVIOUS" id="s2_prevbtn" class="next_btn">-->
+				<input type="button" value="NEXT" id="s2_nxtbtn" class="next_btn">
+		</div>
+	</div>
+
+	<div class="step3">
+		<h4 class="title"><?php echo $wpform_title_s3; ?></h4>
+		<div class="s3"></div>
+		<h6 class="sub-title"><?php echo $wpform_subtitle_s3; ?></h6>
+		<div class="innerDiv">
+			
+		<?php if($wpformlayout == "1"){    ?>
+			<?php if($wpform_hidelabels != 1){ $class="col-sm-9";  } else { $class="col-sm-12"; }   ?>
+			<div class="layout1">
+			  <div class="form-group">
+			   <?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-3" for="email"><?php echo $wpform_labels1_arr[0]; ?><span class="req-text">&nbsp;*</span></label>
+			 <?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="<?php echo $wpform_labels1_arr[0]; ?>">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			  <?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-3" for="pwd"><?php echo $wpform_labels1_arr[1]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="lastname" placeholder="<?php echo $wpform_labels1_arr[1]; ?>" name="lastname">
+			    </div>
+			  </div>
+			<div class="form-group">
+			<?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-3" for="pwd"><?php echo $wpform_labels1_arr[2]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="email" placeholder="<?php echo $wpform_labels1_arr[2]; ?>" name="email">
+			    </div>
+			  </div>
+			<div class="form-group">
+			<?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-3" for="pwd"><?php echo $wpform_labels1_arr[3]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="phone" placeholder="<?php echo $wpform_labels1_arr[3]; ?>" name="phone">
+			    </div>
+			  </div>
+			<div class="form-group">
+			<?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-3" for="pwd">&nbsp;</label>
+			<?php } ?>
+			    <!-- <div class="<?php echo $class; ?>">
+			     <input type="checkbox" class="" id="project_info" name="project_info" placeholder="" value="1"><span>Yes, I would like free project cost information.</span>-->
+			    </div>
+			  </div>
+			</div>
+
+		<?php } else if($wpformlayout == "2"){  ?>
+		<?php if($wpform_hidelabels != 1){ $class="col-sm-7";  $class1="col-sm-9"; } else { $class="col-sm-12"; $class1="col-sm-12";}   ?>
+		<div class="layout2">
+		<div class="form-group ">
+			<?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-5" for="email"><?php echo $wpform_labels2_arr[0]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="<?php echo $wpform_labels2_arr[0]; ?>">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			<?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-5" for="pwd"><?php echo $wpform_labels2_arr[1]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="lastname" placeholder="<?php echo $wpform_labels2_arr[1]; ?>" name="lastname">
+			    </div>
+			  </div>
+			<div class="form-group">
+			<?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-5" for="pwd"><?php echo $wpform_labels2_arr[2]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="email" placeholder="<?php echo $wpform_labels2_arr[2]; ?>" name="email">
+			    </div>
+			  </div>
+			<div class="form-group">
+			<?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-5" for="pwd"><?php echo $wpform_labels2_arr[3]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="phone" placeholder="<?php echo $wpform_labels2_arr[3]; ?>" name="phone">
+			    </div>
+			  </div>
+			<div class="formgroup">
+			<?php if($wpform_hidelabels != 1){ ?>
+			 <label class="control-label col-sm-2" for="pwd"></label>
+			<?php } ?>
+			   <!--  <div class="<?php echo $class1; ?>">
+			     <!-- <input type="checkbox" class="" id="project_info" name="project_info" placeholder="" value="1"><span>Yes, I would like free project cost information.</span>-->
+			    </div>
+			  </div>
+		</div>
+
+		
+
+		<?php } else if($wpformlayout == "3"){   ?>
+			<?php if($wpform_hidelabels != 1){ $class="col-sm-9"; } else { $class="col-sm-12"; }   ?>
+			<div class="layout3">
+			  <div class="form-group">
+			    <?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-3" for="email"><?php echo $wpform_labels3_arr[0]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="<?php echo $wpform_labels3_arr[0]; ?>">
+			    </div>
+			  </div>
+
+			<div class="form-group">
+			<?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-3" for="pwd"><?php echo $wpform_labels3_arr[1]; ?><span class="req-text">&nbsp;*</span></label>
+			<?php } ?>
+			    <div class="<?php echo $class; ?>">
+			      <input type="text" class="form-control" id="email" placeholder="<?php echo $wpform_labels3_arr[1]; ?>" name="email">
+			    </div>
+			  </div>
+			<div class="form-group">
+				 <?php if($wpform_hidelabels != 1){ ?>
+			    <label class="control-label col-sm-3" for="pwd">&nbsp;</label>
+
+				<?php } ?>
+			    <!-- <div class="<?php echo $class; ?> s3-chkbox" >
+			      <!--<input type="checkbox" class="" id="project_info" name="project_info" placeholder="" value="1"><span>Yes, I would like free project cost information.</span>-->
+			    </div>
+			  </div>
+			</div>
+
+		<?php  }?>
+		<hr>
+		<div class="nxt"><input type="submit" value="View Matching Pros" id="s2_prevbtn1" name="webform_btn" class="next_btn">
+			<div class="s3_footer">By submitting this request, you are agreeing to our <a href="#">Terms & conditions</a>.</div>	
+		</div></form>
+	</div>
+
+
+</div>
+<style>
+#s2_nxtbtn {
+  padding: 12px 40px !important;
+}
+.s3-chkbox{ padding-top:20px; }
+.step2 .innerDiv div {
+  padding-bottom: 10px;
+}
+.step2 .innerDiv{
+padding-top:40px;
+  font-size:<?php echo $wpform_contentfontsize; ?>px;
+}
+.step3 .innerDiv{
+  font-size:<?php echo $wpform_contentfontsize; ?>px;
+}
+.step2 .innerDiv span {
+  line-height: 40px;
+  padding-left: 10px;
+}
+#multistep-webform h4 { font-size:<?php echo $wpform_titlefontsize; ?>px; font-weight:<?php echo $wpform_titlefontwt; ?>; }
+.step2 h4 {  font-size:<?php echo $wpform_titlefontsize; ?>px;font-weight:<?php echo $wpform_titlefontwt; ?>; }
+.step3 h4 {  font-size:<?php echo $wpform_titlefontsize; ?>px; font-weight:<?php echo $wpform_titlefontwt; ?>; }
+.form-horizontal {
+  font-family: <?php echo $wpform_fontfamily; ?>;
+}
+.step1 {
+  font-family: <?php echo $wpform_fontfamily; ?>;
+}
+.step2 {
+  font-family: <?php echo $wpform_fontfamily; ?>;
+}
+.step3 {
+  font-family: <?php echo $wpform_fontfamily; ?>;
+}
+.layout1 #project_info{
+
+float:left;
+}
+.layout1 .col-sm-9 > span {
+  float: left;
+  line-height: 34px;
+padding-left:10px;
+}
+.layout1 .col-sm-12 > span {
+  float: left;
+  line-height: 34px;
+padding-left:10px;
+}
+.layout1 .control-label.col-sm-3 {
+  padding-top: 10px;
+}
+.layout1 {
+  height: 200px;
+  margin: 0 auto;
+  width: 500px;
+}
+.layout1 .form-group {
+  float: left;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.formgroup{ width: 500px; }
+.layout3 .col-sm-9 > #project_info {
+  clear: both;
+  float: left;
+  margin-right: 5px;
+  margin-top: 0 !important;
+}
+.layout3 .col-sm-9 {
+  padding-bottom: 8px;
+}
+
+.layout3 .col-sm-12 > #project_info {
+  clear: both;
+  float: left;
+  margin-right: 5px;
+  margin-top: 0 !important;
+}
+.layout3 .col-sm-12 {
+  padding-bottom: 8px;
+}
+.layout2 .control-label.col-sm-5 {
+  padding-right: 0;
+}
+.layout2 .col-sm-7 {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+.layout3 {
+  height: 60px;
+  margin: 0 auto;
+  width: 500px;
+}
+.layout2 #project_info {
+  clear: both;
+  float: left;
+  padding: 5px;
+  margin: 0px 5px 0 0 ;
+}
+.layout2 {
+  width: 500px;
+  padding: 20px 0px;
+  margin: 0 auto;height:100px;
+}
+.layout3 label { text-align:left !important; }
+.layout2 .form-group {
+  margin-bottom: 15px;
+  width: 50%;
+  float: left;
+
+}
+button, .button, input[type="submit"], input[type="button"], #submit {
+  background:<?php echo $btn_clr; ?> none repeat scroll 0 0 !important;
+}
+.col-sm-10 > span {
+  margin-left: 5px;
+  margin-top: 0px;
+}
+#zipcode{ text-align:center; }
+.layout1 #s2_prevbtn1 {
+
+  margin-top: 26px !important;
+
+}
+.success-msg {
+  padding: 60px 20px;
+  font-size: 20px;
+}
+button[disabled], .step1 input[disabled] {
+  background: #ccc none repeat scroll 0 0 !important;
+  cursor: default;
+}
+.s1_form > input {
+  width: 200px;
+}
+.req-text {
+  color: red;
+}
+.s3_footer {
+  font-size: 12px;
+  padding: 20px 10px 0;
+  text-align: center;
+}
+.form-horizontal {
+  margin: 0 auto;
+  width: 80%;
+}
+.s3{width: 250px;
+  margin: 0 auto;
+  border-top: 1px solid #ccc;}
+
+.step3 .innerDiv{
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 20px;
+text-align:left;
+
+  border-top:none;
+}
+hr
+{
+float:left;
+width:100%;
+}
+
+.innerDiv{
+  width: 250px;
+  margin: 0 auto;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+text-align:left;
+padding-bottom:0px;
+}
+.step1 {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.step2 {
+  margin-top:50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+.step2{ display:none; }
+.next_btn{
+background:#ccc !important;
+
+}
+
+.step3 {
+  margin-top:50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+.step3{ display:none; }
+/*#next_btn{
+background:#ccc !important;
+
+}*/
+.enable{
+background:#ccc !important;
+
+}
+.wpform_container {
+  text-align: center;
+padding:40px;
+}
+.nxt{ padding:0px 0px; text-align:center; padding-top:10px;}
+.s1_form{ border-bottom:0px solid #ccc; padding-bottom:20px;}
+.marker-text {
+  padding: 15px;
+font-family: helvetica;
+    letter-spacing: 2px;
+}
+.zipcode {
+  width: 240px;
+  margin: 0 auto;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+font-size: <?php echo $wpform_contentfontsize; ?>px;
+}
+
+.layout3 .col-sm-9 > span {
+  float: left;
+  line-height: 25px;
+}
+.layout3 .col-sm-12 > span {
+  float: left;
+  line-height: 25px;
+}
+.layout2 .col-sm-8 > span {
+  float: left;
+  line-height: 31px;
+}
+</style>
+<?php
+
+
+
+
+wp_register_script('validate_zipcode',plugins_url('js/validate_zipcode.js', __FILE__) );
+wp_enqueue_script( 'validate_zipcode' ); 
+
+wp_register_style('bootstrapcss',plugins_url('css/bootstrap.min.css', __FILE__) );
+wp_enqueue_style( 'bootstrapcss' ); 
+
+
+wp_register_style('webformcss',plugins_url('css/webform.css', __FILE__) );
+wp_enqueue_style( 'webformcss' ); 
+
+}
+
+add_action( 'wp_ajax_check_zipcode', 'check_zipcode' );
+add_action( 'wp_ajax_nopriv_check_zipcode', 'check_zipcode' );
+
+function check_zipcode(){
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'wpform_zipcodes';
+	$zipcode = $_POST["zipcode"];	
+	$result = $wpdb->get_row('Select * from '.$table_name.' where zipcode = '.$zipcode);
+//print_r($result);
+	 $result->city= ucwords(strtolower($result->city));
+	if($result){
+		echo json_encode($result);
+	}
+	exit;
+}
+
+add_shortcode('multistep_form', 'multistep_form');
+?>

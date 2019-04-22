@@ -1,0 +1,57 @@
+.copy_div:hover {
+    background: lightgray;
+    cursor: pointer;
+}
+
+div#pixabay_data>div>ul>li {
+    width: 50%;
+    padding: 0 15px;
+    display: inline-block;
+}
+
+div#menu1_pixabay>div>div {
+    margin-bottom: 20px;
+}
+div#menu1_pixabay>div>div>div>button {
+    margin-top: 77px;
+}
+.img_box {
+    padding-left: 0;
+}
+.img_box>img {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 50%;
+}
+.img_full {
+    position: relative;
+    margin-bottom:20px;
+    padding: 0;
+}
+.img_hover {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: #0000006b;
+    width: 100%;
+    color: #fff;
+    padding: 10px 0 0;
+    display: none;
+}
+.img_full>img {
+    height: 200px;
+}
+.img_full:hover {
+	background:none !important;
+}
+.img_full:hover .img_hover {
+	display: block;
+}
+
+.news_box {
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+.form-group+div>div>div {
+    padding: 10px 0;
+}
