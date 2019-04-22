@@ -1,4 +1,5 @@
 <?php
+die('im manpreet code');
 /**
  * Twenty Nineteen functions and definitions
  *
