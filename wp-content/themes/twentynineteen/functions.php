@@ -1,5 +1,5 @@
 <?php
-die('im gourav code');
+
 /**
  * Twenty Nineteen functions and definitions
  *
