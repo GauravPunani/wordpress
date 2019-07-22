@@ -20,8 +20,7 @@ require( dirname( __FILE__ ) . '/wp-blog-header.php' );
 //added comment in file
 
 
-//code added in development branch
+//removed some code from git and added more code from github
 
 
-//more code added in development to be pushed on github
 
