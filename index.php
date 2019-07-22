@@ -18,3 +18,8 @@ require( dirname( __FILE__ ) . '/wp-blog-header.php' );
 
 
 //added comment in file
+
+
+//code added in development branch
+
+
